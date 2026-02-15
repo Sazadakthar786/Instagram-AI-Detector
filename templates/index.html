@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram AI Detector | Fake Account Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background" aria-hidden="true"></div>
+
+    <main class="dashboard">
+        <header class="dashboard-header fade-in">
+            <h1 class="logo">Instagram AI Detector</h1>
+            <p class="tagline">Advanced fake account analysis</p>
+        </header>
+
+        <section class="glass-card card-main fade-in delay-1">
+            <form method="POST" action="/predict" class="form-dashboard">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="e.g. johndoe" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" placeholder="Profile bio text (length is used automatically)" rows="2"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="num_posts">Posts</label>
+                        <input type="number" id="num_posts" name="num_posts" placeholder="0" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_followers">Followers</label>
+                        <input type="number" id="num_followers" name="num_followers" placeholder="0" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_following">Following</label>
+                        <input type="number" id="num_following" name="num_following" placeholder="0" min="0" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="has_profile_pic">Profile picture</label>
+                        <select id="has_profile_pic" name="has_profile_pic">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_private">Private account</label>
+                        <select id="is_private" name="is_private">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="has_external_url">External URL</label>
+                        <select id="has_external_url" name="has_external_url">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Analyze account</button>
+            </form>
+            <p class="train-link"><a href="/train">Train or retrain model</a> (data/train.csv)</p>
+        </section>
+    </main>
+</body>
+</html>

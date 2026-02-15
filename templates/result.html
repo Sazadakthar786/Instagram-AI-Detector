@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result | Instagram AI Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="background"></div>
+
+<main class="dashboard dashboard-result">
+
+{% if error %}
+    <section class="glass-card result-section fade-in">
+        <h2 class="result-section-title error-title">Error</h2>
+        <p class="error-message">{{ error }}</p>
+    </section>
+
+{% elif result and result.get('trained') %}
+    <section class="glass-card result-section fade-in">
+        <h2 class="result-section-title success-title">Model trained successfully</h2>
+        <p class="result-section-desc">You can now analyze accounts from the home page.</p>
+    </section>
+
+{% elif result %}
+
+<!-- Section 1: AI Verdict -->
+<section class="glass-card result-section fade-in">
+    <h3 class="result-section-title">AI Verdict</h3>
+
+    <p class="result-verdict {{ 'verdict-fake' if result.is_fake == 1 else 'verdict-real' }}">
+        {{ 'FAKE ACCOUNT ❌' if result.is_fake == 1 else 'REAL ACCOUNT ✅' }}
+    </p>
+
+    <p class="result-probability">{{ result.probability }}% fake probability</p>
+
+    <div class="gauge-wrap">
+        <canvas id="gaugeChart"></canvas>
+        <span class="gauge-center">{{ result.probability }}%</span>
+    </div>
+</section>
+
+<!-- Section 2: Confidence & Risk -->
+<section class="glass-card result-section fade-in">
+    <h3 class="result-section-title">Confidence & Risk</h3>
+
+    <div class="confidence-bar">
+        <div class="confidence-fill" data-pct="{{ result.probability }}"></div>
+    </div>
+
+    <p class="confidence-label">Confidence (fake)</p>
+
+    <p class="risk-level">
+        Risk level:
+        <span class="risk-badge risk-{{ result.risk_level|lower }}">
+            {{ result.risk_level }}
+        </span>
+    </p>
+</section>
+
+<!-- Section 3: Account Statistics -->
+<section class="glass-card result-section fade-in">
+    <h3 class="result-section-title">Account Statistics</h3>
+    <div class="chart-wrap chart-bar-only">
+        <canvas id="statsChart"></canvas>
+    </div>
+</section>
+
+<!-- Section 4: Model Performance -->
+{% if result.model_metrics %}
+<section class="glass-card result-section fade-in">
+    <h3 class="result-section-title">Model Performance</h3>
+
+    <div class="metrics-grid">
+        <div class="metric-item">
+            <span class="metric-value">{{ result.model_metrics.accuracy }}%</span>
+            <span class="metric-label">Accuracy</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-value">{{ result.model_metrics.precision }}%</span>
+            <span class="metric-label">Precision</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-value">{{ result.model_metrics.recall }}%</span>
+            <span class="metric-label">Recall</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-value">{{ result.model_metrics.f1 }}%</span>
+            <span class="metric-label">F1 Score</span>
+        </div>
+    </div>
+
+    <p class="confusion-label">Confusion Matrix (Validation Set)</p>
+
+    <div class="confusion-grid">
+        <div></div>
+        <div class="cm-title">Predicted Real</div>
+        <div class="cm-title">Predicted Fake</div>
+
+        <div class="cm-title">Actual Real</div>
+        <div class="cm-cell cm-tn">{{ result.model_metrics.confusion_matrix[0][0] }}</div>
+        <div class="cm-cell cm-fp">{{ result.model_metrics.confusion_matrix[0][1] }}</div>
+
+        <div class="cm-title">Actual Fake</div>
+        <div class="cm-cell cm-fn">{{ result.model_metrics.confusion_matrix[1][0] }}</div>
+        <div class="cm-cell cm-tp">{{ result.model_metrics.confusion_matrix[1][1] }}</div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Section 5: AI Explanation -->
+<section class="glass-card result-section fade-in">
+    <h3 class="result-section-title">AI Explanation</h3>
+    <p class="explanation-text">{{ result.explanation }}</p>
+</section>
+
+{% endif %}
+
+<div class="result-footer">
+    <a href="/" class="back-btn">Analyze another</a>
+</div>
+
+</main>
+
+{% if result and not result.get('trained') %}
+<script>
+(function() {
+
+    const pct = {{ result.probability|default(0) }};
+
+    // Gauge
+    const gaugeCtx = document.getElementById('gaugeChart');
+    if (gaugeCtx) {
+        new Chart(gaugeCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [pct, 100 - pct],
+                    backgroundColor: [
+                        pct >= 50 ? '#ff6b6b' : '#51cf66',
+                        'rgba(255,255,255,0.1)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                circumference: 180,
+                rotation: 270,
+                cutout: '75%',
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+
+    // Confidence bar animation
+    const fill = document.querySelector('.confidence-fill');
+    if (fill) {
+        setTimeout(() => {
+            fill.style.width = pct + '%';
+        }, 200);
+    }
+
+    // Stats chart
+    const statsCtx = document.getElementById('statsChart');
+    if (statsCtx) {
+        new Chart(statsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Followers', 'Following', 'Posts', 'Username Len', 'Bio Len'],
+                datasets: [{
+                    data: [
+                        {{ result.followers }},
+                        {{ result.following }},
+                        {{ result.posts }},
+                        {{ result.username_length }},
+                        {{ result.bio_length }}
+                    ],
+                    backgroundColor: ['#00f2fe', '#ff416c', '#4facfe', '#8e44ad', '#f39c12']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#aaa' }
+                    },
+                    x: {
+                        ticks: { color: '#aaa' }
+                    }
+                }
+            }
+        });
+    }
+
+})();
+</script>
+{% endif %}
+
+</body>
+</html>

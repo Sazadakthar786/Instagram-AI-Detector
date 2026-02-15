@@ -1,0 +1,557 @@
+/* ---------------------------------------------------------------------------
+   Instagram AI Detector - Modern AI SaaS Dashboard
+   Dark gradient, glassmorphism, Outfit font, responsive
+   --------------------------------------------------------------------------- */
+
+:root {
+    --bg-dark: #0f0f1a;
+    --glass: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --text: #e8e8ed;
+    --text-muted: #a0a0b0;
+    --accent: #00f2fe;
+    --accent-alt: #ff416c;
+    --success: #51cf66;
+    --error: #ff6b6b;
+    --radius: 16px;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Outfit', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg-dark);
+    overflow-x: hidden;
+}
+
+/* Animated dark gradient background */
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(-45deg, #0f0f1a, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: gradientMove 18s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Fade-in animations */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+.fade-in.delay-1 {
+    animation-delay: 0.15s;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Dashboard layout */
+.dashboard {
+    padding: 2rem 1rem 3rem;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.25rem;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.tagline {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+/* Glassmorphism card */
+.glass-card {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.card-main {
+    padding: 2rem 1.5rem;
+}
+
+.card-result {
+    padding: 2rem 1.5rem;
+}
+
+/* Form */
+.form-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a0a0b0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+/* Primary button */
+.btn-primary {
+    margin-top: 0.5rem;
+    padding: 0.9rem 1.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent-alt), #ff6b4a);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(255, 65, 108, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.train-link {
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.train-link a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.train-link a:hover {
+    text-decoration: underline;
+}
+
+/* Result block (prevents layout break when error or no result) */
+.result-block {
+    margin-bottom: 1.5rem;
+}
+
+.result-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+.result-verdict {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.5rem;
+    text-align: center;
+}
+
+.verdict-fake {
+    color: var(--error);
+}
+
+.verdict-real {
+    color: var(--success);
+}
+
+.result-error .error-message,
+.result-success p {
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.result-error .error-title,
+.error-message {
+    color: var(--error);
+}
+
+.result-success .success-title {
+    color: var(--success);
+}
+
+/* Circular gauge */
+.gauge-wrap {
+    position: relative;
+    width: 180px;
+    height: 90px;
+    margin: 0 auto 0.25rem;
+}
+
+#gaugeChart {
+    display: block;
+    width: 180px !important;
+    height: 90px !important;
+}
+
+.gauge-center {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    pointer-events: none;
+}
+
+.confidence-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0 0 0.5rem;
+    text-align: center;
+}
+
+/* Horizontal confidence bar */
+.confidence-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    margin: 0 0 1.5rem;
+    overflow: hidden;
+}
+
+.confidence-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--accent), #4facfe);
+    transition: width 0.6s ease;
+}
+
+/* Bar chart container */
+.chart-wrap {
+    position: relative;
+    height: 220px;
+    margin: 0 0 1rem;
+}
+
+#statsChart {
+    max-height: 220px;
+}
+
+/* Back button */
+.back-btn {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Result page: section cards (same glass theme)
+   --------------------------------------------------------------------------- */
+.dashboard-result {
+    max-width: 620px;
+    padding-bottom: 3rem;
+}
+
+.result-section {
+    margin-bottom: 1.25rem;
+    padding: 1.5rem 1.25rem;
+}
+
+.result-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.result-section-desc {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.result-verdict {
+    font-size: clamp(1.35rem, 4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+    text-align: center;
+}
+
+.result-probability {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+}
+
+.credibility-line {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.risk-level {
+    margin: 0.75rem 0 0;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.risk-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.risk-badge.risk-low {
+    background: rgba(81, 207, 102, 0.25);
+    color: var(--success);
+}
+
+.risk-badge.risk-medium {
+    background: rgba(245, 199, 0, 0.25);
+    color: #f5c700;
+}
+
+.risk-badge.risk-high {
+    background: rgba(255, 107, 107, 0.25);
+    color: var(--error);
+}
+
+/* Metrics grid (accuracy, precision, recall, f1) */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.metric-item {
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+
+.metric-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.confusion-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0 0 0.5rem;
+}
+
+.confusion-matrix {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    gap: 1px;
+    max-width: 260px;
+    margin: 0 auto;
+    background: var(--glass-border);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.cm-cell {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    text-align: center;
+    background: var(--bg-dark);
+    color: var(--text);
+}
+
+.cm-header {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.cm-tn { color: var(--success); }
+.cm-tp { color: var(--success); }
+.cm-fp { color: var(--accent-alt); }
+.cm-fn { color: var(--accent-alt); }
+
+.explanation-text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--text);
+}
+
+.result-footer {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.chart-bar-only {
+    height: 220px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .dashboard {
+        padding: 1.25rem 0.75rem 2rem;
+    }
+
+    .glass-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .result-section {
+        padding: 1.25rem 1rem;
+    }
+}
+/* ---------------------------------------------------------------------------
+   Confusion Matrix Visual Enhancement (ADD ONLY – no existing changes)
+   --------------------------------------------------------------------------- */
+
+/* Add soft background highlights for each confusion matrix cell */
+.cm-tn {
+    color: var(--success);
+    background: rgba(81, 207, 102, 0.12);
+}
+
+.cm-tp {
+    color: var(--success);
+    background: rgba(81, 207, 102, 0.18);
+}
+
+.cm-fp {
+    color: var(--accent-alt);
+    background: rgba(255, 65, 108, 0.15);
+}
+
+.cm-fn {
+    color: var(--accent-alt);
+    background: rgba(255, 65, 108, 0.12);
+}
+
+/* Add subtle hover animation for better UI feel */
+.cm-cell:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Smooth appearance animation */
+.confusion-matrix {
+    animation: fadeIn 0.6s ease forwards;
+}
